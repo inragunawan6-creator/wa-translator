@@ -1,0 +1,44 @@
+:root {
+  --bg: #f6f7f8; --panel: #ffffff; --fg: #111b21; --muted: #667781; --line: #e2e6e9;
+  --accent: #0f766e; --accentfg: #ffffff; --ok: #15803d; --bad: #b91c1c;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0b141a; --panel: #111b21; --fg: #e9edef; --muted: #8696a0; --line: #2a3942; --accent: #14b8a6; --accentfg: #062925; --ok: #4ade80; --bad: #f87171; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 28px 16px 90px; }
+.top { display: flex; gap: 14px; align-items: center; margin-bottom: 20px; }
+.top h1 { font-size: 20px; margin: 0; }
+.top p { margin: 2px 0 0; color: var(--muted); }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 0 0 14px; }
+h2 { font-size: 15px; margin: 0 0 12px; }
+label { display: block; margin: 10px 0 0; font-weight: 500; font-size: 13px; }
+input[type=text], input[type=password], input[type=url], input[type=number], select, textarea {
+  display: block; width: 100%; margin-top: 4px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--fg); font: inherit; font-weight: 400;
+}
+textarea { resize: vertical; font-size: 13px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+.chk { display: flex; gap: 8px; align-items: center; font-weight: 400; margin-top: 12px; }
+.hint { color: var(--muted); font-size: 12.5px; margin: 6px 0 0; }
+code { font-size: 12px; background: var(--bg); padding: 1px 4px; border-radius: 4px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg label { margin: 0; display: flex; gap: 6px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 400; }
+.seg label:has(input:checked) { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.pv { display: none; }
+.pv.on { display: block; }
+button, .file { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); padding: 7px 12px; display: inline-block; margin: 0; font-weight: 400; }
+button:hover, .file:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accentfg); border-color: var(--accent); font-weight: 600; }
+button.ghost { margin-top: 8px; }
+.file input { display: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.msg { font-size: 13px; color: var(--muted); }
+.msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+.savebar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 10px 16px; display: flex; gap: 12px; align-items: center; justify-content: center; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+th { color: var(--muted); font-weight: 500; }

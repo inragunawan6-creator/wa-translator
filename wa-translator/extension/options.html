@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pengaturan — WA Translator</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="top">
+      <img src="icons/icon48.png" alt="" width="36" height="36">
+      <div>
+        <h1>WA Translator &amp; Reply Assistant</h1>
+        <p>Terjemahan otomatis dan saran balasan di WhatsApp Web untuk tim CS &amp; bisnis.</p>
+      </div>
+    </header>
+
+    <form id="form" autocomplete="off">
+      <section>
+        <h2>1. Layanan AI</h2>
+        <div class="seg" id="providerSeg">
+          <label><input type="radio" name="provider" value="anthropic"> Claude (Anthropic)</label>
+          <label><input type="radio" name="provider" value="openai"> OpenAI / kompatibel</label>
+          <label><input type="radio" name="provider" value="gemini"> Google Gemini</label>
+          <label><input type="radio" name="provider" value="proxy"> Proxy tim</label>
+        </div>
+
+        <div class="pv" data-pv="anthropic">
+          <label>API key Anthropic<input type="password" id="anthropicKey" placeholder="sk-ant-…"></label>
+          <label>Model<input type="text" id="anthropicModel" list="anthropicModels"></label>
+          <datalist id="anthropicModels"><option value="claude-haiku-5-5"><option value="claude-sonnet-5-5"></datalist>
+          <p class="hint">Haiku cepat &amp; hemat untuk terjemahan harian; Sonnet untuk kualitas balasan yang lebih matang.</p>
+        </div>
+        <div class="pv" data-pv="openai">
+          <label>API key<input type="password" id="openaiKey" placeholder="sk-…"></label>
+          <label>Model<input type="text" id="openaiModel"></label>
+          <label>Base URL<input type="url" id="openaiBase" placeholder="https://api.openai.com/v1"></label>
+          <p class="hint">Bisa dipakai untuk layanan lain yang kompatibel dengan OpenAI (Chat Completions) dengan mengganti Base URL.</p>
+        </div>
+        <div class="pv" data-pv="gemini">
+          <label>API key Gemini<input type="password" id="geminiKey" placeholder="AIza…"></label>
+          <label>Model<input type="text" id="geminiModel"></label>
+        </div>
+        <div class="pv" data-pv="proxy">
+          <label>URL proxy<input type="url" id="proxyUrl" placeholder="https://wa-translator.namatim.workers.dev"></label>
+          <label>Token tim<input type="password" id="proxyToken"></label>
+          <p class="hint">Disarankan untuk tim: API key hanya tersimpan di server proxy, setiap agen cukup memakai token tim. Lihat README bagian “Proxy tim”.</p>
+        </div>
+        <div class="actions"><button type="button" id="test">Tes koneksi</button><span id="testMsg" class="msg"></span></div>
+      </section>
+
+      <section>
+        <h2>2. Bahasa &amp; perilaku</h2>
+        <div class="grid">
+          <label>Bahasa agen (bahasa Anda)<select id="agentLang"></select></label>
+          <label>Gaya bahasa balasan
+            <select id="formality">
+              <option value="formal">Formal</option>
+              <option value="semi-formal">Ramah-profesional</option>
+              <option value="casual">Santai (tetap sopan)</option>
+            </select>
+          </label>
+          <label>Maks. pesan masuk diterjemahkan per chat<input type="number" id="maxAutoPerChat" min="5" max="60"></label>
+          <label>Jumlah pesan sebagai konteks saran<input type="number" id="contextMessages" min="4" max="60"></label>
+        </div>
+        <label class="chk"><input type="checkbox" id="autoTranslate"> Terjemahkan pesan masuk otomatis (bisa dimatikan per chat di panel)</label>
+        <label class="chk"><input type="checkbox" id="hotkeys"> Aktifkan shortcut Alt+T / Alt+R / Alt+Q</label>
+        <label class="chk"><input type="checkbox" id="pushLayout"> Geser tampilan WhatsApp saat panel terbuka (agar panel tidak menutupi chat)</label>
+      </section>
+
+      <section>
+        <h2>3. Profil bisnis</h2>
+        <p class="hint">AI hanya memakai fakta dari sini dan dari percakapan. Info yang tidak ada (harga, jadwal, kebijakan) akan dibuat sebagai <code>[isi: …]</code> untuk dilengkapi agen.</p>
+        <label>Nama bisnis / brand<input type="text" id="businessName" placeholder="City Explorer"></label>
+        <label>Profil, produk, kebijakan, FAQ
+          <textarea id="businessProfile" rows="12"></textarea>
+        </label>
+        <button type="button" id="template" class="ghost">Isi dengan templat</button>
+        <label>Tanda tangan (opsional)<input type="text" id="signature" placeholder="— Rina, Tim City Explorer"></label>
+      </section>
+
+      <section>
+        <h2>4. Privasi</h2>
+        <label class="chk"><input type="checkbox" id="maskPII"> Samarkan nomor telepon &amp; email sebelum dikirim ke layanan AI</label>
+        <p class="hint">Isi chat yang diterjemahkan/dianalisis dikirim ke layanan AI yang dipilih. Pastikan sesuai kebijakan privasi perusahaan dan perjanjian dengan penyedia AI. Pesan tidak pernah dikirim otomatis ke pelanggan — agen selalu menekan kirim sendiri.</p>
+        <div class="actions"><button type="button" id="clearCache" class="ghost">Hapus cache terjemahan</button></div>
+      </section>
+
+      <section>
+        <h2>5. Bagikan ke tim</h2>
+        <p class="hint">Ekspor pengaturan (profil bisnis, bahasa, provider) lalu impor di komputer agen lain.</p>
+        <label class="chk"><input type="checkbox" id="exportKeys"> Sertakan API key / token (jangan aktifkan jika file akan dibagikan luas)</label>
+        <div class="actions">
+          <button type="button" id="export">Ekspor pengaturan</button>
+          <label class="file">Impor pengaturan<input type="file" id="import" accept="application/json"></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pemakaian 7 hari terakhir</h2>
+        <table id="usage"><thead><tr><th>Tanggal</th><th>Permintaan</th><th>Token masuk</th><th>Token keluar</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <div class="savebar">
+        <button type="submit" class="primary">Simpan pengaturan</button>
+        <span id="msg" class="msg"></span>
+      </div>
+    </form>
+  </main>
+  <script src="lib/langs.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
